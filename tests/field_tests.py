@@ -5424,6 +5424,10 @@ class TestWorkbenchFieldFactory(unittest.TestCase):
             workbench_fields.MediaTrackField,
         )
         self.assertIsInstance(
+            workbench_fields.WorkbenchFieldFactory.get_field_handler("paragraph"),
+            workbench_fields.EntityReferenceRevisionsField,
+        )
+        self.assertIsInstance(
             workbench_fields.WorkbenchFieldFactory.get_field_handler(
                 "linked_data_field"
             ),

@@ -99,6 +99,33 @@ def mocked_request_ping_taxonomy_term(*args, **kwargs):
     return True
 
 
+class TestEntityReferenceRevisionsField(unittest.TestCase):
+
+    def test_paragraph_field_serialize_uses_target_id_when_config_missing(self):
+        config = {"subdelimiter": "|"}
+        field_definitions = {
+            "field_paragraph": {
+                "entity_type": "node",
+                "field_type": "entity_reference_revisions",
+                "target_type": "paragraph",
+            }
+        }
+        field_data = [
+            {"target_id": 1491, "target_type": "paragraph"},
+            {"target_id": 1492, "target_type": "paragraph"},
+        ]
+
+        field = workbench_fields.EntityReferenceRevisionsField()
+        output = field.serialize(
+            config,
+            field_definitions,
+            "field_paragraph",
+            field_data,
+        )
+
+        self.assertEqual("1491|1492", output)
+
+
 class TestEntityReferenceField(unittest.TestCase):
 
     @mock.patch(
