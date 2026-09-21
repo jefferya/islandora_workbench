@@ -2006,19 +2006,10 @@ class EntityReferenceRevisionsField(WorkbenchField):
 
         # Cache paragraph field definitions
         paragraph_type = paragraph_configs.get("type")
-        if not paragraph_type or not paragraph_configs.get("field_order"):
-            target_ids = [
-                str(subvalue.get("target_id"))
-                for subvalue in field_data
-                if subvalue and subvalue.get("target_id") is not None
-            ]
-            if len(target_ids) > 1:
-                return subdelimiter.join(target_ids)
-            elif len(target_ids) == 1:
-                return target_ids[0]
-            elif field_data:
-                return json.dumps(field_data)
-            return None
+        if not paragraph_type:
+            logging.warning(
+                f'Could not determine target paragraph type for field [{field_name}] {field_data}. Returning data from Drupal.'
+             )
         if not self.paragraph_field_definitions.get(paragraph_type):
             self.paragraph_field_definitions[paragraph_type] = get_field_definitions(
                 config, "paragraph", paragraph_type
